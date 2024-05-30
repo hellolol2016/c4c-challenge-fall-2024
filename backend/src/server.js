@@ -1,5 +1,6 @@
 import express from "express";
-import data from "../data.js";
+import data from "../data.json" with {type:"json"};
+import fs from "fs";
 
 const app = express();
 const port = 4000;
@@ -35,8 +36,17 @@ app.get("/", (req, res) => {
 app.post("/register", (req, res) => {
   data.partners.push({ id: data.partners.length + 1, ...req.body });
   console.log("data after push = ", data);
+  fs.writeFileSync("data.json", JSON.stringify(data, null, 2));
   res.status(200).send("project registered!");
 });
+
+
+app.delete("/delete/:id", (req, res) => {
+  data.partners = data.partners.filter((partner) => partner.id !== parseInt(req.params.id));
+  console.log("data after delete = ", data)
+  fs.writeFileSync("data.json", JSON.stringify(data, null, 2));
+  res.status(200).send("project deleted!");
+})
 
 // Start the backend
 app.listen(port, () => {

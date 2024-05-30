@@ -24,7 +24,7 @@ function Dashboard() {
   }, []);
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    //e.preventDefault();
     console.log("posting", name, logo, active, desc);
 
     await axios.post("http://localhost:4000/register", {
