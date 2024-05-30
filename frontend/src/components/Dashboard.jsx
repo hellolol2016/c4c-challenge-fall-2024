@@ -1,40 +1,37 @@
 import { useState, useEffect } from "react";
 import PartnerTile from "./PartnerTile";
-import data from "../../data";
+import axios from "axios";
+//import data from "/data";
 
-const projects = data.projects;
-console.log(projects);
 /*
   The top-level component containing everything relevant to the dashboard,
   including information on each partner
 */
 
 function Dashboard() {
-  //const [partners, setPartners] = useState({});
+  const [partners, setPartners] = useState([]);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [logo, setLogo] = useState("");
   const [active, setActive] = useState(true);
 
   // Load all partners on initial page load
-  //useEffect(() => {
-  //fetch('http://localhost:4000', {
-  //method: 'GET',
-  //})
-  //.then((res) => res.json())
-  //}, [])
+  useEffect(() => {
+    axios.get("http://localhost:4000/").then((res) => {
+      setPartners(res.data.partners);
+      console.log(res.data.partners);
+    });
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log("posting", name, logo, active, desc);
 
-    await fetch("http://localhost:4000/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name: name,
-        thumbnail: logo,
-        status: active,
-        description: desc,
-      }),
+    await axios.post("http://localhost:4000/register", {
+      name: name,
+      thumbnail: logo,
+      status: active,
+      description: desc,
     });
   }
   return (
@@ -79,7 +76,7 @@ function Dashboard() {
       </form>
 
       <div id="main-partners-grid">
-        {projects.map((partner) => {
+        {partners.map((partner) => {
           return <PartnerTile partnerData={partner} key={partner.name} />;
         })}
       </div>
