@@ -52,4 +52,33 @@ h1.title {
 
 .partner-info {
   font-size: 0.9em;
+  overflow-y: auto;
+}
+.partner-status {
+  font-weight: 600;
+}
+.Active {
+  color: rgb(101, 255, 175);
+}
+
+.Inactive {
+  color: rgb(255, 101, 101);
+}
+.label-input {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.partner-form {
+  display: flex;
+  width: 70vw;
+  gap: 20px;
+  border: 1px solid rgb(101, 255, 175);
+}
+
+.submit {
+  padding: 10px;
+  background-color: #04aa6d;
+  color: white;
 }
