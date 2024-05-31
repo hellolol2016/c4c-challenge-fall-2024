@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Activity from "./Activity";
+import PartnerTile from "./PartnerTile";
 //import data from "/data";
 
 /*
@@ -38,30 +39,6 @@ function Dashboard() {
       description: desc,
     });
     getPartners();
-  }
-
-  function PartnerTile({ partnerData }) {
-    async function deleteProject() {
-      await axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
-      getPartners();
-    }
-    console.log(partnerData.active);
-    return (
-      <div className="partner-tile">
-        <img
-          className="partner-thumbnail"
-          src={partnerData.thumbnail}
-          alt="thumbnail"
-        />
-        <hr />
-        <h3>{partnerData.name}</h3>
-        <Activity active={partnerData.active} />
-        <div className="partner-info">{partnerData.description}</div>
-        <button className="delete" onClick={deleteProject}>
-          Delete
-        </button>
-      </div>
-    );
   }
 
   return (
@@ -124,7 +101,6 @@ function Dashboard() {
               partnerData={partner}
               key={partner.name}
               getPartners={getPartners}
-              setPartners={setPartners}
             />
           );
         })}

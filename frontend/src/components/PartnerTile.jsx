@@ -7,10 +7,10 @@ import axios from "axios";
   along with any tools to manage said information
 */
 
-function PartnerTile({ partnerData }) {
-  function deleteProject() {
-    axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
-    setPartners(getPartners);
+export default function PartnerTile({ partnerData,getPartners }) {
+  async function deleteProject() {
+    await axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
+    getPartners();
   }
   return (
     <div className="partner-tile">
@@ -21,7 +21,7 @@ function PartnerTile({ partnerData }) {
       />
       <hr />
       <h3>{partnerData.name}</h3>
-      <Activity status={partnerData.active} />
+      <Activity active={partnerData.active} />
       <div className="partner-info">{partnerData.description}</div>
       <button className="delete" onClick={deleteProject}>
         Delete
@@ -29,5 +29,3 @@ function PartnerTile({ partnerData }) {
     </div>
   );
 }
-
-export default PartnerTile;
