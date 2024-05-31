@@ -16,18 +16,22 @@ function Dashboard() {
   const [logo, setLogo] = useState("");
   const [active, setActive] = useState(true);
 
-  const [search, setSearch] = useState("");
-
   // Load all partners on initial page load
   useEffect(() => {
     if (partners.length) return;
     getPartners();
   }, [partners]);
 
-  async function getPartners() {
-    axios.get("http://localhost:4000/").then((res) => {
-      setPartners(res.data.partners);
-    });
+  async function getPartners(q) {
+    if (q) {
+      axios.get(`http://localhost:4000/search/?q=${q}`).then((res) => {
+        setPartners(res.data.partners);
+      });
+    } else {
+      axios.get("http://localhost:4000/").then((res) => {
+        setPartners(res.data.partners);
+      });
+    }
   }
 
   async function handleSubmit(e) {
@@ -39,6 +43,10 @@ function Dashboard() {
       description: desc,
     });
     getPartners();
+  }
+
+  function updateSearch(e) {
+    getPartners(e.target.value);
   }
 
   return (
@@ -84,12 +92,11 @@ function Dashboard() {
       <label>Search for partners here!</label>
       <form className="partner-form">
         <div className="label-input">
-          <label>Partner name</label>
+          <label>Partner Info</label>
           <input
             type="text"
-            placeholder="Search partner name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search partner name / desc"
+            onChange={(e) => updateSearch(e)}
           />
         </div>
       </form>

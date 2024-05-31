@@ -33,6 +33,15 @@ app.get("/", (req, res) => {
   res.status(200).send(data);
 });
 
+app.get("/search", (req, res) => {
+  //const q = req.params.q;
+  const q = req.query.q; 
+  const partners = data.partners.filter((partner) =>
+    partner.name.toLowerCase().includes(q.toLowerCase()) || partner.description.toLowerCase().includes(q.toLowerCase())
+  );
+  res.status(200).send({ partners });
+});
+
 app.post("/register", (req, res) => {
   data.partners.push({ id: data.partners.length + 1, ...req.body });
   console.log("data after push = ", data);
