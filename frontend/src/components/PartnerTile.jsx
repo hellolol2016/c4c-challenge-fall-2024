@@ -10,6 +10,7 @@ import axios from "axios";
 function PartnerTile({ partnerData }) {
   function deleteProject() {
     axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
+    setPartners(getPartners);
   }
   return (
     <div className="partner-tile">

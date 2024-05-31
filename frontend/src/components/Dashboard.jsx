@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import PartnerTile from "./PartnerTile";
 import axios from "axios";
+import Activity from "./Activity";
 //import data from "/data";
 
 /*
@@ -15,25 +15,55 @@ function Dashboard() {
   const [logo, setLogo] = useState("");
   const [active, setActive] = useState(true);
 
+  const [search, setSearch] = useState("");
+
   // Load all partners on initial page load
   useEffect(() => {
+    if (partners.length) return;
+    getPartners();
+  }, [partners]);
+
+  async function getPartners() {
     axios.get("http://localhost:4000/").then((res) => {
       setPartners(res.data.partners);
-      console.log(res.data.partners);
     });
-  }, []);
+  }
 
   async function handleSubmit(e) {
-    //e.preventDefault();
-    console.log("posting", name, logo, active, desc);
-
+    e.preventDefault();
     await axios.post("http://localhost:4000/register", {
       name: name,
       thumbnail: logo,
       status: active,
       description: desc,
     });
+    getPartners();
   }
+
+  function PartnerTile({ partnerData }) {
+    async function deleteProject() {
+      await axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
+      getPartners();
+    }
+    console.log(partnerData.active);
+    return (
+      <div className="partner-tile">
+        <img
+          className="partner-thumbnail"
+          src={partnerData.thumbnail}
+          alt="thumbnail"
+        />
+        <hr />
+        <h3>{partnerData.name}</h3>
+        <Activity active={partnerData.active} />
+        <div className="partner-info">{partnerData.description}</div>
+        <button className="delete" onClick={deleteProject}>
+          Delete
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div id="main-content">
       <form className="partner-form" onSubmit={handleSubmit}>
@@ -74,10 +104,29 @@ function Dashboard() {
         </div>
         <button className="submit">Submit</button>
       </form>
+      <label>Search for partners here!</label>
+      <form className="partner-form">
+        <div className="label-input">
+          <label>Partner name</label>
+          <input
+            type="text"
+            placeholder="Search partner name"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </form>
 
       <div id="main-partners-grid">
         {partners.map((partner) => {
-          return <PartnerTile partnerData={partner} key={partner.name} />;
+          return (
+            <PartnerTile
+              partnerData={partner}
+              key={partner.name}
+              getPartners={getPartners}
+              setPartners={setPartners}
+            />
+          );
         })}
       </div>
     </div>
