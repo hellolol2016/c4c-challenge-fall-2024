@@ -3,7 +3,6 @@
   COMPONENT STYLES
   ================
 */
-
 /* MainDisplay */
 
 #main-content {
@@ -41,6 +40,7 @@ h1.title {
 
   border: 1px solid #3d3d3d;
   border-radius: 12px;
+  gap: 5px;
 
   padding: 25px;
 }
@@ -52,6 +52,7 @@ h1.title {
 
 .partner-info {
   font-size: 0.9em;
+  height: 300px;
   overflow-y: auto;
 }
 .partner-status {
@@ -83,5 +84,11 @@ h1.title {
   color: white;
 }
 .delete {
+  padding: 5px;
+  border-radius: 8px;
   background-color: rgb(255, 124, 151);
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

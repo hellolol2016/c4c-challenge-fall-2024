@@ -11,10 +11,7 @@ import PartnerTile from "./PartnerTile";
 
 function Dashboard() {
   const [partners, setPartners] = useState([]);
-  const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const [logo, setLogo] = useState("");
-  const [active, setActive] = useState(true);
+  const [emptySearch, setEmptySearch] = useState(false);
 
   // Load all partners on initial page load
   useEffect(() => {
@@ -25,7 +22,12 @@ function Dashboard() {
   async function getPartners(q) {
     if (q) {
       axios.get(`http://localhost:4000/search/?q=${q}`).then((res) => {
-        setPartners(res.data.partners);
+        if (res.data.partners.length === 0) {
+          setEmptySearch(true);
+        } else {
+          setEmptySearch(false);
+          setPartners(res.data.partners);
+        }
       });
     } else {
       axios.get("http://localhost:4000/").then((res) => {
@@ -37,12 +39,13 @@ function Dashboard() {
   async function handleSubmit(e) {
     e.preventDefault();
     await axios.post("http://localhost:4000/register", {
-      name: name,
-      thumbnail: logo,
-      status: active,
-      description: desc,
+      name: e.target.name.value,
+      thumbnail: "/projects/" + e.target.logo.value,
+      active: e.target.active.checked ? true : false,
+      description: e.target.description.value,
     });
     getPartners();
+    e.target.reset();
   }
 
   function updateSearch(e) {
@@ -51,66 +54,72 @@ function Dashboard() {
 
   return (
     <div id="main-content">
-      <form className="partner-form" onSubmit={handleSubmit}>
+      <label>Add a Partner Here!</label>
+      <form
+        className="flex flex-row gap-3 bg-slate-100 p-4 rounded-sm"
+        onSubmit={handleSubmit}
+      >
         <div className="label-input">
           <label>Partner name</label>
           <input
             type="text"
             placeholder="Partner Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"
+            className="p-2 border-4 rounded-md"
           />
         </div>
         <div className="label-input">
           <label>Partner description</label>
           <input
             type="text"
+            name="description"
             placeholder="Partner Description"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            className="p-2 border-4 rounded-md"
           />
         </div>
         <div className="label-input">
           <label>Partner Logo Source</label>
           <input
             type="text"
+            name="logo"
             placeholder="Partner Logo Source"
-            value={logo}
-            onChange={(e) => setLogo(e.target.value)}
+            className="p-2 border-4 rounded-md"
           />
         </div>
         <div className="label-input">
           <label>Active?</label>
-          <input
-            type="checkbox"
-            checked={active}
-            onChange={() => setActive(!active)}
-          />
+          <input type="checkbox" name="active" className="p-2 m-4" />
         </div>
-        <button className="submit">Submit</button>
+        <button className="bg-green-300 px-6 rounded-md">Submit</button>
       </form>
+      <div className="h-5"></div>
       <label>Search for partners here!</label>
-      <form className="partner-form">
+      <form className="flex flex-col bg-neutral-300 p-3 rounded-md">
         <div className="label-input">
           <label>Partner Info</label>
           <input
             type="text"
             placeholder="Search partner name / desc"
             onChange={(e) => updateSearch(e)}
+            className="p-2 border-4 rounded-md w-80"
           />
         </div>
       </form>
 
+      <div className="h-5"></div>
+      <h2 className="text-2xl font-bold">Partners!</h2>
       <div id="main-partners-grid">
-        {partners.map((partner) => {
-          return (
-            <PartnerTile
-              partnerData={partner}
-              key={partner.name}
-              getPartners={getPartners}
-            />
-          );
-        })}
+        {emptySearch && <h2>No partners found :/</h2>}
+        {!emptySearch &&
+          partners.map((partner) => {
+            return (
+              <PartnerTile
+                partnerData={partner}
+                key={partner.name}
+                getPartners={getPartners}
+              />
+            );
+          })}
       </div>
     </div>
   );

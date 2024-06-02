@@ -7,23 +7,23 @@ import axios from "axios";
   along with any tools to manage said information
 */
 
-export default function PartnerTile({ partnerData,getPartners }) {
+export default function PartnerTile({ partnerData, getPartners }) {
   async function deleteProject() {
     await axios.delete(`http://localhost:4000/delete/${partnerData.id}`);
     getPartners();
   }
   return (
-    <div className="partner-tile">
+    <div className="partner-tile shadow-md">
       <img
         className="partner-thumbnail"
         src={partnerData.thumbnail}
         alt="thumbnail"
       />
-      <hr />
       <h3>{partnerData.name}</h3>
       <Activity active={partnerData.active} />
       <div className="partner-info">{partnerData.description}</div>
-      <button className="delete" onClick={deleteProject}>
+      <hr></hr>
+      <button className="bg-red-300 p-2 rounded-md" onClick={deleteProject}>
         Delete
       </button>
     </div>

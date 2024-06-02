@@ -20,6 +20,13 @@
       "thumbnail": "/projects/lego.png",
       "active": true,
       "description": "Lego is a popular toy brand known for its interlocking plastic bricks that can be assembled to create various models and structures. "
+    },
+    {
+      "id": 4,
+      "name": "save test",
+      "thumbnail": "/projects/microsoft.png",
+      "active": true,
+      "description": "seeing if this organization stays after restarting"
     }
   ]
 }

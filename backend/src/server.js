@@ -44,7 +44,6 @@ app.get("/search", (req, res) => {
 
 app.post("/register", (req, res) => {
   data.partners.push({ id: data.partners.length + 1, ...req.body });
-  console.log("data after push = ", data);
   fs.writeFileSync("../data.json", JSON.stringify(data, null, 2));
   res.status(200).send("project registered!");
 });
@@ -52,7 +51,6 @@ app.post("/register", (req, res) => {
 
 app.delete("/delete/:id", (req, res) => {
   data.partners = data.partners.filter((partner) => partner.id !== parseInt(req.params.id));
-  console.log("data after delete = ", data)
   fs.writeFileSync("../data.json", JSON.stringify(data, null, 2));
   res.status(200).send("project deleted!");
 })
