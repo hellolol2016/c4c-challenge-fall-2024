@@ -2,7 +2,8 @@
 
 Hello, this is my submission for NEU Code4Community fall 2024 coding challenge.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/video-id" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+Please watch this video setup and demo!
+https://youtu.be/64CBRlUE52c
 
 
 ## How to start
