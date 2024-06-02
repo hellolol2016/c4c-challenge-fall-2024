@@ -18,6 +18,7 @@ https://youtu.be/64CBRlUE52c
 ## High-level overview
 
 **Frontend** - Uses React, HTML, and CSS to take user input and represent backend data
+
 **Backend** - Express to host server and take user requests to access / make changes to a backend data json document.
 
 ## Design Choices
